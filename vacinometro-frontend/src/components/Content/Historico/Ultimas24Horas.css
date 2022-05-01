@@ -1,0 +1,37 @@
+.app-content-ultimas24horas {
+    background-color: var(--content-secondary-container-color);
+    margin: auto auto;
+    padding: 1em;
+}
+
+.ultimas24horas-field-list {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+}
+
+.ultimas24horas-field {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.ultimas24horas-field h4 {
+    margin: 10px 0;
+}
+
+.ultimas24horas-field-value {
+    padding: 1em;
+    background-color: var(--content-secondary-content-color);
+    color: #fff;
+    text-align: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 14pt;
+    font-weight: bold;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    width: 5em;
+    margin-left: 1em;
+    height: calc(fit-content + 1em);
+}

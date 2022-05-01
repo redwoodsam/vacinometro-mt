@@ -1,0 +1,33 @@
+.numero-doses-campos-list {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+}
+
+.numero-doses-campo {
+    display: flex;
+    position: inherit;
+    flex-direction: column;
+    margin: 1.5em auto;
+    
+}
+
+.campoDoses {
+    position: relative;
+    background-color: var(--content-field-bg-color);
+    color: #fff;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    height: 2em;
+    width: 50%; 
+}
+
+.numero-doses-campo h4 {
+    margin-top: 0;
+}

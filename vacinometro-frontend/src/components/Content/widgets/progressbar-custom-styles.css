@@ -1,0 +1,16 @@
+.CircularProgressbar {
+    margin-top: 10px;
+    height: 20vh;
+}
+
+.CircularProgressbar-path {
+    stroke: #06A6CE;
+}
+
+.CircularProgressbar-trail {
+    stroke: #ACAEBB;
+}
+
+.CircularProgressbar-text {
+    fill: #fff !important;
+}

@@ -1,0 +1,10 @@
+.app-content-footer {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    text-align: right;
+}
+
+.app-content-source {
+    margin: 5px 0;
+}

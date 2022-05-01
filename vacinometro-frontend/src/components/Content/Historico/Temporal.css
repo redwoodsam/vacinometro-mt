@@ -1,0 +1,11 @@
+.app-content-timeline-container {
+    width: 50%;
+    margin: auto auto;
+    padding: 1em;
+    background-color: var(--content-secondary-container-color);
+}
+
+.app-content-timeline-title {
+    margin-top: 0;
+    margin-bottom: 10px;
+}

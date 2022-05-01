@@ -1,0 +1,14 @@
+.app-content-container { 
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--content-container-color);
+    width: 80%;
+    height: fit-content;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.app-content-container-title {
+    font-size: 1.3em;
+}

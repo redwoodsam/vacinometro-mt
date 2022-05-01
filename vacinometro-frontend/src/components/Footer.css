@@ -1,0 +1,37 @@
+.app-footer {
+    background: var(--header-footer-color);
+    display: flex;
+    width: 100%;
+    text-align: center;
+    padding: 1em 0;
+}
+
+.app-footer svg {
+    color: #fff;
+    margin: 0 5px;
+}
+
+.app-footer-copyright {
+    display: flex;
+    margin: auto auto;
+}
+
+.footer-items {
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.footer-items span {
+    margin-right: 1em;
+}
+
+@media only screen and (max-width: 940px) {
+    .footer-items {
+        flex-direction: column;
+    }
+
+    .social-icons {
+        margin-top: 15px;
+    }
+}
