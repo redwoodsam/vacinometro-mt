@@ -5,11 +5,11 @@ Dashboard que mostra o progresso da campanha de vacinação da Covid-19 no estad
 
 Essa aplicação consiste em duas API's independentes e um front-end:
 
-- Scraping API - Uma API feita com Flask que dispara um script Selenium que coleta os dados do site da Secretaria de Saúde do estado e o armazena em um banco de dados PostgreSQL.
+- Scraping API - Uma API feita com **Flask** que dispara um script Selenium que coleta os dados do site da Secretaria de Saúde do estado e o armazena em um banco de dados PostgreSQL.
 
-- Fetch API - Uma API feita com Lumen que consulta os dados guardados no banco de dados, os processa e os disponibiliza em suas rotas para o front-end consumir.
+- Fetch API - Uma API feita com **Lumen** que consulta os dados guardados no banco de dados, os processa e os disponibiliza em suas rotas para o front-end consumir.
 
-- Front-end - A página principal do site, feita utilizando ReactJS.
+- Front-end - A página principal do site, feita utilizando **ReactJS**.
 
 ----------------------------------------------------------------------------------------------
 
@@ -17,8 +17,8 @@ Dashboard that shows the progress of Covid-19 vaccination campaign in Brazil's S
 
 It consists of two independent APIs and a front-end:
 
-- Scraping API - A API made with Flask that fires a Selenium script to retrieve the data from Mato-Grosso Health Secretary website and store in a PostgreSQL database.
+- Scraping API - A API made with **Flask** that fires a Selenium script to retrieve the data from Mato-Grosso Health Secretary website and store in a PostgreSQL database.
 
-- Fetch API - A API made with Lumen that retrieves the data stored on the database, processes and make it available to the frontend to get it.
+- Fetch API - A API made with **Lumen** that retrieves the data stored on the database, processes and make it available to the frontend to get it.
 
-- Front-End - The front-end page made with ReactJS.
+- Front-End - The front-end page made with **ReactJS**.
