@@ -24,7 +24,7 @@ class DadoVacinacaoController {
 
         if (!$dadoMaisRecente) return response(0);
 
-        $expiresAt = Carbon::now()->addHours(12);
+        $expiresAt = Carbon::now()->addHours(6);
 
         Cache::put('latestData', $dadoMaisRecente, $expiresAt);
 
@@ -82,7 +82,7 @@ class DadoVacinacaoController {
         $resposta["dosesReforco"] = abs((int) $ultimasDosesReforco - (int) $penultimasDosesReforco);
 
         // Adiciona o item ao cache com um tempo de expiração de 12 horas
-        $expiresAt = Carbon::now()->addHours(12);
+        $expiresAt = Carbon::now()->addHours(6);
         Cache::put('last24hours', $resposta, $expiresAt);
 
         return response()->json($resposta);
@@ -101,12 +101,11 @@ class DadoVacinacaoController {
         ->orderByDesc('dataAtualizacao')
         ->get();
 
-        $expiresAt = Carbon::now()->addHours(12);
+        $expiresAt = Carbon::now()->addHours(6);
 
         Cache::put('historyData', $dadosHistoricos, $expiresAt);
 
         return response()->json($dadosHistoricos);
 
     }
-
 }
