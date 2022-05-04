@@ -126,54 +126,93 @@ export class Chart extends Component {
 
             // Algoritmo responsável por separar os dados de acordo com o seu período
             // e obter o número total de doses de acordo com o período
-            categorias.forEach((categoria) => {
-                if (Array.isArray(this.props.historico)) {
-                    for (let i = 0; i < this.props.historico.length; i++) {
-                        try {
-                            this.getCategoria(this.props.historico[i + 1]);
-                        } catch (TypeError) {
-                            let valorPrimeirasDosesInicial = this.props.historico[0].qtdPrimeiraDose;
-                            let valorPrimeirasDosesFinal = this.props.historico[i].qtdPrimeiraDose;
-                            let totalPrimeirasDoses = parseInt(valorPrimeirasDosesInicial) - parseInt(valorPrimeirasDosesFinal);
+            let inicio = this.props.historico.length - 1;
+            let fim = this.props.historico.length - 2;
 
-                            if (!valoresPrimeirasDoses.includes(Math.abs(totalPrimeirasDoses))) {
-                                valoresPrimeirasDoses.push(Math.abs(totalPrimeirasDoses));
+            let contadorPrimeirasDoses = 0;
+            let contadorSegundasDoses = 0;
+            let contadorDosesReforco = 0;
+
+
+            let totalPrimeirasDoses = [];
+            let totalSegundasDoses = [];
+            let totalDosesReforco = [];
+
+            if (Array.isArray(this.props.historico)) {
+
+                try {
+                    for (let i = inicio; i >= 0; i--) {
+    
+        
+                        this.getCategoria(this.props.historico[i - 1]);
+    
+                        let categoriaAtual = this.getCategoria(this.props.historico[i]);
+                        let proximaCategoria = this.getCategoria(this.props.historico[i - 1]);
+                        
+                        let valorPrimeirasDosesInicial = this.props.historico[inicio].qtdPrimeiraDose;
+                        let valorPrimeirasDosesFinal = this.props.historico[fim].qtdPrimeiraDose;
+                        
+                        let valorSegundasDosesInicial = this.props.historico[inicio].qtdSegundaDose;
+                        let valorSegundasDosesFinal = this.props.historico[fim].qtdSegundaDose;
+                        
+                        let valorDosesReforcoInicial = this.props.historico[inicio].qtdDoseReforco;
+                        let valorDosesReforcoFinal = this.props.historico[fim].qtdDoseReforco;
+                        
+                        contadorPrimeirasDoses += (parseInt(valorPrimeirasDosesFinal) - parseInt(valorPrimeirasDosesInicial));
+                        contadorSegundasDoses += (parseInt(valorSegundasDosesFinal) - parseInt(valorSegundasDosesInicial));
+                        contadorDosesReforco += (parseInt(valorDosesReforcoFinal) - parseInt(valorDosesReforcoInicial));
+    
+    
+                        if (proximaCategoria != categoriaAtual) {
+    
+                            
+                            inicio = i;
+                            fim = i - 1;
+                            
+                            if (!valoresPrimeirasDoses.includes(Math.abs(contadorPrimeirasDoses))) {
+                                totalPrimeirasDoses.push(Math.abs(contadorPrimeirasDoses));
+                                contadorPrimeirasDoses = 0;
                             }
-
-                            let valorSegundasDosesInicial = this.props.historico[0].qtdSegundaDose;
-                            let valorSegundasDosesFinal = this.props.historico[i].qtdSegundaDose;
-                            let totalSegundasDoses = parseInt(valorSegundasDosesInicial) - parseInt(valorSegundasDosesFinal);
-                            if (!valoresSegundasDoses.includes(Math.abs(totalSegundasDoses))) {
-                                valoresSegundasDoses.push(Math.abs(totalSegundasDoses));
+    
+                            if (!valoresSegundasDoses.includes(Math.abs(contadorSegundasDoses))) {
+                                totalSegundasDoses.push(Math.abs(contadorSegundasDoses));
+                                contadorSegundasDoses = 0;
+    
                             }
-
-                            let valorDosesReforcoInicial = this.props.historico[0].qtdDoseReforco;
-                            let valorDosesReforcoFinal = this.props.historico[i].qtdDoseReforco;
-                            let totalDosesReforco = parseInt(valorDosesReforcoInicial) - parseInt(valorDosesReforcoFinal);
-                            if (!valoresDosesReforco.includes(Math.abs(totalDosesReforco))) {
-                                valoresDosesReforco.push(Math.abs(totalDosesReforco));
+    
+                            if (!valoresDosesReforco.includes(Math.abs(contadorDosesReforco))) {
+                                totalDosesReforco.push(Math.abs(contadorDosesReforco));
+                                contadorDosesReforco = 0;
+                                
                             }
                         }
+    
+                        inicio -= 1;
+                        fim -= 1;
+    
                     }
+
+                } catch {
+
                 }
-            });
+            }
 
             // Por fim, junta as informações e as seta como um estado ao gráfico.
             const newState = [];
 
             newState.push({
                 name: 'Primeira dose',
-                data: valoresPrimeirasDoses,
+                data: totalPrimeirasDoses,
             });
 
             newState.push({
                 name: 'Segunda dose',
-                data: valoresSegundasDoses,
+                data: totalSegundasDoses,
             });
 
             newState.push({
                 name: 'Dose de reforço',
-                data: valoresDosesReforco,
+                data: totalDosesReforco,
             });
 
             this.setState({
