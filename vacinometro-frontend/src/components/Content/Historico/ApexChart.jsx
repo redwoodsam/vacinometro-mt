@@ -105,15 +105,53 @@ export class Chart extends Component {
             let valoresSegundasDoses = [];
             let valoresDosesReforco = [];
 
-            let categorias = [];
-
+            let categorias = []
+            let doses = {};
+            
             if (Array.isArray(this.props.historico)) {
                 this.props.historico.forEach((dado) => {
                     let category = this.getCategoria(dado);
 
                     if (!categorias.includes(category)) categorias.push(category);
                 });
+
+                categorias.map( categoria => {
+                    doses[categoria] = {
+                        "primeirasDoses": [],
+                        "segundasDoses": [],
+                        "dosesReforco": []
+                    };
+                })
+
+                this.props.historico.forEach((dado) => {
+
+                    let currentCategory = this.getCategoria(dado);
+
+                    doses[currentCategory]["primeirasDoses"].push(dado.qtdPrimeiraDose);
+                    doses[currentCategory]["segundasDoses"].push(dado.qtdSegundaDose);
+                    doses[currentCategory]["dosesReforco"].push(dado.qtdDoseReforco);
+                })
+
+                for( let mes in doses) {
+                    for( let key in doses[mes] ) {
+                        let maxIndex = doses[mes][key].length - 1;
+                        if(maxIndex === 0) {
+                            let previousMonthIndex = categorias.indexOf(mes) + 1;
+                            let previousMonth = categorias[previousMonthIndex];
+                            let previousMonthMaxIndex = doses[previousMonth][key].length - 1;
+                            console.log(doses[previousMonth][key][previousMonthMaxIndex])
+
+                            console.log(doses[previousMonth][key])
+
+                            doses[mes][key] = (parseInt(doses[mes][key][0]) - parseInt(doses[previousMonth][key][previousMonthMaxIndex]));
+
+                            continue;
+                        }
+                        doses[mes][key] = (parseInt(doses[mes][key][0]) - parseInt(doses[mes][key][maxIndex]));
+                    }
+                }
             }
+
 
             // Define as categorias
             this.setState({
@@ -124,100 +162,28 @@ export class Chart extends Component {
                 },
             });
 
-            // Algoritmo responsável por separar os dados de acordo com o seu período
-            // e obter o número total de doses de acordo com o período
-            let inicio = this.props.historico.length - 1;
-            let fim = this.props.historico.length - 2;
+            
+            // // Por fim, junta as informações e as seta como um estado ao gráfico.
+            // const newState = [];
 
-            let contadorPrimeirasDoses = 0;
-            let contadorSegundasDoses = 0;
-            let contadorDosesReforco = 0;
+            // newState.push({
+            //     name: 'Primeira dose',
+            //     data: totalPrimeirasDoses,
+            // });
 
+            // newState.push({
+            //     name: 'Segunda dose',
+            //     data: totalSegundasDoses,
+            // });
 
-            let totalPrimeirasDoses = [];
-            let totalSegundasDoses = [];
-            let totalDosesReforco = [];
+            // newState.push({
+            //     name: 'Dose de reforço',
+            //     data: totalDosesReforco,
+            // });
 
-            if (Array.isArray(this.props.historico)) {
-
-                try {
-                    for (let i = inicio; i >= 0; i--) {
-    
-        
-                        this.getCategoria(this.props.historico[i - 1]);
-    
-                        let categoriaAtual = this.getCategoria(this.props.historico[i]);
-                        let proximaCategoria = this.getCategoria(this.props.historico[i - 1]);
-                        
-                        let valorPrimeirasDosesInicial = this.props.historico[inicio].qtdPrimeiraDose;
-                        let valorPrimeirasDosesFinal = this.props.historico[fim].qtdPrimeiraDose;
-                        
-                        let valorSegundasDosesInicial = this.props.historico[inicio].qtdSegundaDose;
-                        let valorSegundasDosesFinal = this.props.historico[fim].qtdSegundaDose;
-                        
-                        let valorDosesReforcoInicial = this.props.historico[inicio].qtdDoseReforco;
-                        let valorDosesReforcoFinal = this.props.historico[fim].qtdDoseReforco;
-                        
-                        contadorPrimeirasDoses += (parseInt(valorPrimeirasDosesFinal) - parseInt(valorPrimeirasDosesInicial));
-                        contadorSegundasDoses += (parseInt(valorSegundasDosesFinal) - parseInt(valorSegundasDosesInicial));
-                        contadorDosesReforco += (parseInt(valorDosesReforcoFinal) - parseInt(valorDosesReforcoInicial));
-    
-    
-                        if (proximaCategoria != categoriaAtual) {
-    
-                            
-                            inicio = i;
-                            fim = i - 1;
-                            
-                            if (!valoresPrimeirasDoses.includes(Math.abs(contadorPrimeirasDoses))) {
-                                totalPrimeirasDoses.push(Math.abs(contadorPrimeirasDoses));
-                                contadorPrimeirasDoses = 0;
-                            }
-    
-                            if (!valoresSegundasDoses.includes(Math.abs(contadorSegundasDoses))) {
-                                totalSegundasDoses.push(Math.abs(contadorSegundasDoses));
-                                contadorSegundasDoses = 0;
-    
-                            }
-    
-                            if (!valoresDosesReforco.includes(Math.abs(contadorDosesReforco))) {
-                                totalDosesReforco.push(Math.abs(contadorDosesReforco));
-                                contadorDosesReforco = 0;
-                                
-                            }
-                        }
-    
-                        inicio -= 1;
-                        fim -= 1;
-    
-                    }
-
-                } catch {
-
-                }
-            }
-
-            // Por fim, junta as informações e as seta como um estado ao gráfico.
-            const newState = [];
-
-            newState.push({
-                name: 'Primeira dose',
-                data: totalPrimeirasDoses,
-            });
-
-            newState.push({
-                name: 'Segunda dose',
-                data: totalSegundasDoses,
-            });
-
-            newState.push({
-                name: 'Dose de reforço',
-                data: totalDosesReforco,
-            });
-
-            this.setState({
-                series: newState,
-            });
+            // this.setState({
+            //     series: newState,
+            // });
         }
     }
 
