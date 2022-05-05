@@ -86,7 +86,7 @@ export class Chart extends Component {
         };
     }
 
-    // Função responsável por converter a string da data de atualização do dado para um período
+    // Função responsável por converter a string da data de atualização do dado para um período (Mês/Ano)
     getCategoria(dado) {
         let meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
@@ -108,6 +108,7 @@ export class Chart extends Component {
             let categorias = []
             let doses = {};
             
+            // Obtém as categorias (meses).
             if (Array.isArray(this.props.historico)) {
                 this.props.historico.forEach((dado) => {
                     let category = this.getCategoria(dado);
@@ -122,7 +123,8 @@ export class Chart extends Component {
                         "dosesReforco": []
                     };
                 })
-
+                
+                // Separa os dados por mês.
                 this.props.historico.forEach((dado) => {
 
                     let currentCategory = this.getCategoria(dado);
@@ -132,58 +134,58 @@ export class Chart extends Component {
                     doses[currentCategory]["dosesReforco"].push(dado.qtdDoseReforco);
                 })
 
+                // Realiza a contagem de doses de cada mês.
                 for( let mes in doses) {
                     for( let key in doses[mes] ) {
                         let maxIndex = doses[mes][key].length - 1;
                         if(maxIndex === 0) {
                             let previousMonthIndex = categorias.indexOf(mes) + 1;
                             let previousMonth = categorias[previousMonthIndex];
-                            let previousMonthMaxIndex = doses[previousMonth][key].length - 1;
-                            console.log(doses[previousMonth][key][previousMonthMaxIndex])
 
-                            console.log(doses[previousMonth][key])
-
-                            doses[mes][key] = (parseInt(doses[mes][key][0]) - parseInt(doses[previousMonth][key][previousMonthMaxIndex]));
+                            doses[mes][key] = (parseInt(doses[mes][key][0]) - parseInt(doses[previousMonth][key][0]));
 
                             continue;
                         }
                         doses[mes][key] = (parseInt(doses[mes][key][0]) - parseInt(doses[mes][key][maxIndex]));
                     }
+
+                    valoresPrimeirasDoses.unshift(doses[mes]["primeirasDoses"]);
+                    valoresSegundasDoses.unshift(doses[mes]["segundasDoses"]);
+                    valoresDosesReforco.unshift(doses[mes]["dosesReforco"]);
                 }
             }
 
-
-            // Define as categorias
+            // Define as categorias no gráfico
             this.setState({
                 chartOptions: {
                     xaxis: {
-                        categories: categorias,
+                        categories: categorias.reverse(),
                     },
                 },
             });
 
             
-            // // Por fim, junta as informações e as seta como um estado ao gráfico.
-            // const newState = [];
+            // Por fim, junta as quantidades de doses e as seta como um estado ao gráfico.
+            const newState = [];
 
-            // newState.push({
-            //     name: 'Primeira dose',
-            //     data: totalPrimeirasDoses,
-            // });
+            newState.push({
+                name: 'Primeira dose',
+                data: valoresPrimeirasDoses,
+            });
 
-            // newState.push({
-            //     name: 'Segunda dose',
-            //     data: totalSegundasDoses,
-            // });
+            newState.push({
+                name: 'Segunda dose',
+                data: valoresSegundasDoses,
+            });
 
-            // newState.push({
-            //     name: 'Dose de reforço',
-            //     data: totalDosesReforco,
-            // });
+            newState.push({
+                name: 'Dose de reforço',
+                data: valoresDosesReforco,
+            });
 
-            // this.setState({
-            //     series: newState,
-            // });
+            this.setState({
+                series: newState,
+            });
         }
     }
 
