@@ -142,7 +142,11 @@ export class Chart extends Component {
                             let previousMonthIndex = categorias.indexOf(mes) + 1;
                             let previousMonth = categorias[previousMonthIndex];
 
-                            doses[mes][key] = (parseInt(doses[mes][key][0]) - parseInt(doses[previousMonth][key][0]));
+                            if(typeof previousMonth == "undefined") {
+                                doses[mes][key] = parseInt(doses[mes][key][0]);
+                            } else {
+                                doses[mes][key] = (parseInt(doses[mes][key][0]) - parseInt(doses[previousMonth][key][0]));
+                            }
 
                             continue;
                         }

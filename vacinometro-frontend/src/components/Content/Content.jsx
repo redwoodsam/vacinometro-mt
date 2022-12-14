@@ -60,14 +60,14 @@ function Content() {
                 console.error('Erro ao obter dados da API: ' + err.message);
             });
     }, []);
-
+    
     return (
         <main className="app-content-container">
             {error && <Error failedItems={error.failedItems} />}
             <h2 className="app-content-container-title">Total de doses aplicadas (em relação à população) </h2>
             <NumeroDoses latestData={latestData} />
             <Historico historico={historico} last24HoursData={last24HoursData} />
-            <ContentFooter dataAtualizacao={latestData.dataAtualizacao} />
+            <ContentFooter dataAtualizacao={latestData?.dataAtualizacao} />
             {loading && <Loading />}
         </main>
     );
