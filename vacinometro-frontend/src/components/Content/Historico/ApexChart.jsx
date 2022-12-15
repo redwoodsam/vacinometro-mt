@@ -117,7 +117,7 @@ export class Chart extends Component {
                 });
 
                 categorias.map( categoria => {
-                    doses[categoria] = {
+                    return doses[categoria] = {
                         "primeirasDoses": [],
                         "segundasDoses": [],
                         "dosesReforco": []
